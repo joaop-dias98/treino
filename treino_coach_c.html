@@ -105,6 +105,16 @@ body{display:flex;flex-direction:column;min-height:100vh}
 .btn-copy.copied{background:var(--ok)}
 .btn-back-home{background:transparent;border:1px solid var(--border);color:var(--muted);font-family:var(--font-body);font-size:14px;padding:12px;border-radius:50px;cursor:pointer;width:100%}
 
+/* ── FEEDBACK BUTTON ── */
+.btn-feedback{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;background:transparent;border:1px solid var(--accent);color:var(--accent);font-family:var(--font-display);font-size:14px;font-weight:700;padding:11px;border-radius:50px;cursor:pointer;transition:background .15s}
+.btn-feedback:active{background:rgba(232,255,71,.1)}
+.feedback-icon{width:18px;height:18px;flex-shrink:0}
+
+/* ── FEEDBACK per-exercise ── */
+.ex-feedback{padding:4px 14px 12px;display:flex;justify-content:flex-end}
+.ex-feedback-btn{background:transparent;border:none;color:var(--muted);font-size:11px;font-family:var(--font-mono);cursor:pointer;padding:4px 8px;border-radius:6px;border:1px solid var(--border);transition:color .15s,border-color .15s}
+.ex-feedback-btn:active{color:var(--accent);border-color:var(--accent)}
+
 /* ── WEEK MODAL ── */
 .modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:300;align-items:flex-end;justify-content:center}
 .modal-bg.open{display:flex}
@@ -390,6 +400,11 @@ function renderSession(){
             <input class="input-field" type="text" placeholder="dor, ajuste, sensação..." id="obs_${id}"
               oninput="updateData('${id}')" onfocus="setActive('card_${id}',true)" onblur="setActive('card_${id}',false)">
           </div>
+        </div>
+        <div class="ex-feedback">
+          <button class="ex-feedback-btn" id="fbtn_${id}" onclick="feedbackExercicio('${id}','${ex.n.replace(/'/g,"\\'")}','${ex.p.replace(/'/g,"\\'")}')">
+            Feedback deste exercício →
+          </button>
         </div>`;
       }
       html += `</div>`;
@@ -502,7 +517,7 @@ function finishSession(){
   localStorage.setItem('done_days', JSON.stringify(doneDays));
 
   document.getElementById('summary-box').textContent = lines.join('\n');
-  document.getElementById('btn-copy').textContent = 'Copiar para o Coach C.';
+  document.getElementById('btn-copy').textContent = 'Copiar resumo da sessão';
   document.getElementById('btn-copy').classList.remove('copied');
   showScreen('screen-summary');
   window.scrollTo(0,0);
@@ -512,8 +527,49 @@ function copyText(){
   const text = document.getElementById('summary-box').textContent;
   navigator.clipboard.writeText(text).then(()=>{
     const btn = document.getElementById('btn-copy');
-    btn.textContent = '✓ Copiado!';
+    btn.textContent = '✓ Copiado! Cole no projeto gym.jp';
     btn.classList.add('copied');
+    setTimeout(()=>{
+      btn.textContent = 'Copiar resumo da sessão';
+      btn.classList.remove('copied');
+    }, 3000);
+  });
+}
+
+function feedbackExercicio(id, nome, params){
+  const d = sessionData[id]||{};
+  if(!d.carga && !d.rir){
+    const btn = document.getElementById('fbtn_'+id);
+    const orig = btn.textContent;
+    btn.textContent = 'Preencha carga ou RIR primeiro';
+    btn.style.color = 'var(--warn)';
+    btn.style.borderColor = 'var(--warn)';
+    setTimeout(()=>{
+      btn.textContent = orig;
+      btn.style.color = '';
+      btn.style.borderColor = '';
+    }, 2000);
+    return;
+  }
+  const week = WEEKS.find(w=>w.id===currentWeek);
+  let text = `🏋️ FEEDBACK — ${currentDay.name} · ${week.label}\n`;
+  text += `Exercício: ${nome} (${params})\n`;
+  if(d.carga) text += `Carga usada: ${d.carga}\n`;
+  if(d.rir !== '') text += `RIR real: ${d.rir}\n`;
+  if(d.obs) text += `Obs: ${d.obs}\n`;
+  text += `\nCoach C., como avalia esse registro?`;
+
+  navigator.clipboard.writeText(text).then(()=>{
+    const btn = document.getElementById('fbtn_'+id);
+    const orig = btn.textContent;
+    btn.textContent = '✓ Copiado! Cole no projeto gym.jp';
+    btn.style.color = 'var(--ok)';
+    btn.style.borderColor = 'var(--ok)';
+    setTimeout(()=>{
+      btn.textContent = orig;
+      btn.style.color = '';
+      btn.style.borderColor = '';
+    }, 3000);
   });
 }
 
