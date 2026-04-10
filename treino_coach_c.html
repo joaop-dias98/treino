@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Treino — Coach C.</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@700;800&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+:root{
+  --bg:#0D0D0F;--surface:#17171A;--card:#1E1E22;--border:#2A2A30;
+  --text:#F0F0F0;--muted:#6B6B75;--accent:#E8FF47;--accent-dim:#9AAA1E;
+  --danger:#FF5252;--ok:#47FFAB;--warn:#FFB347;
+  --radius:14px;--font-display:'Syne',sans-serif;--font-body:'DM Sans',sans-serif;--font-mono:'DM Mono',monospace;
+}
+html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--font-body);overflow-x:hidden}
+body{display:flex;flex-direction:column;min-height:100vh}
+
+/* ── TOP BAR ── */
+.topbar{position:sticky;top:0;z-index:100;background:var(--bg);border-bottom:1px solid var(--border);padding:12px 16px;display:flex;align-items:center;justify-content:space-between}
+.topbar-logo{font-family:var(--font-display);font-size:18px;font-weight:800;letter-spacing:-0.5px;color:var(--accent)}
+.topbar-sub{font-size:11px;color:var(--muted);font-family:var(--font-mono);margin-top:1px}
+.week-pill{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:4px 10px;font-size:12px;font-family:var(--font-mono);color:var(--muted);cursor:pointer;display:flex;align-items:center;gap:6px}
+.week-pill span{color:var(--accent);font-weight:500}
+
+/* ── SCREENS ── */
+.screen{display:none;flex-direction:column;flex:1;padding:16px}
+.screen.active{display:flex}
+
+/* ── DAY PICKER ── */
+.screen-home{gap:12px}
+.home-greeting{font-family:var(--font-display);font-size:26px;font-weight:800;line-height:1.1;margin-bottom:4px}
+.home-greeting em{color:var(--accent);font-style:normal}
+.home-hint{font-size:13px;color:var(--muted);margin-bottom:8px}
+.day-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.day-btn{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:16px 14px;cursor:pointer;transition:border-color .15s,transform .1s;display:flex;flex-direction:column;gap:6px;text-align:left}
+.day-btn:active{transform:scale(0.97)}
+.day-btn.today{border-color:var(--accent);position:relative}
+.day-btn.today::after{content:'HOJE';position:absolute;top:10px;right:10px;font-size:9px;font-family:var(--font-mono);color:var(--accent);font-weight:500;letter-spacing:0.08em}
+.day-btn.done{border-color:var(--ok);opacity:.7}
+.day-label{font-size:11px;font-family:var(--font-mono);color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.day-name{font-family:var(--font-display);font-size:18px;font-weight:700}
+.day-type{font-size:11px;color:var(--muted)}
+.day-type-badge{display:inline-block;padding:3px 8px;border-radius:20px;font-size:10px;font-family:var(--font-mono)}
+.bt-futebol{background:#0D2B1A;color:#47FFAB}
+.bt-lower{background:#0D1B2B;color:#47C2FF}
+.bt-reab{background:#2B1A0D;color:#FFB347}
+.bt-potencia{background:#1A0D2B;color:#C47FFF}
+.bt-push{background:#2B0D1A;color:#FF7FCA}
+.bt-pull{background:#0D2B2B;color:#47FFDE}
+.bt-descanso{background:#1A1A1A;color:#6B6B75}
+
+/* ── SESSION SCREEN ── */
+.screen-session{gap:0;padding:0}
+.session-header{padding:16px 16px 12px;border-bottom:1px solid var(--border);background:var(--bg);position:sticky;top:57px;z-index:90}
+.session-back{font-size:12px;font-family:var(--font-mono);color:var(--muted);cursor:pointer;margin-bottom:8px;display:inline-flex;align-items:center;gap:4px}
+.session-title{font-family:var(--font-display);font-size:22px;font-weight:800}
+.session-meta{font-size:12px;color:var(--muted);font-family:var(--font-mono);margin-top:2px}
+.progress-bar{height:3px;background:var(--border);border-radius:2px;margin-top:10px;overflow:hidden}
+.progress-fill{height:100%;background:var(--accent);border-radius:2px;transition:width .4s ease}
+
+.session-body{padding:16px;display:flex;flex-direction:column;gap:20px;padding-bottom:100px}
+
+/* ── BLOCO ── */
+.bloco-label{font-size:10px;font-family:var(--font-mono);color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px;padding-left:2px}
+.bloco-exercises{display:flex;flex-direction:column;gap:8px}
+
+/* ── EXERCISE CARD ── */
+.ex-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;transition:border-color .2s}
+.ex-card.filled{border-color:#2A3A20}
+.ex-card.active-input{border-color:var(--accent)}
+.ex-header{padding:12px 14px 8px;display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
+.ex-name{font-size:14px;font-weight:500;line-height:1.3;flex:1}
+.ex-params{font-size:11px;font-family:var(--font-mono);color:var(--muted);white-space:nowrap;padding-top:2px}
+.ex-sug{padding:0 14px 6px;font-size:11px;color:var(--accent-dim);font-family:var(--font-mono)}
+.ex-inputs{padding:8px 14px 12px;display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.ex-inputs.wide{grid-template-columns:1fr}
+.input-group{display:flex;flex-direction:column;gap:4px}
+.input-label{font-size:10px;font-family:var(--font-mono);color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.input-field{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:10px 12px;font-size:16px;color:var(--text);font-family:var(--font-mono);width:100%;outline:none;-webkit-appearance:none;transition:border-color .15s}
+.input-field:focus{border-color:var(--accent)}
+.input-field::placeholder{color:var(--border)}
+.ex-note{padding:0 14px 10px;font-size:11px;color:var(--muted);line-height:1.5}
+.ex-alert{padding:6px 14px 10px;font-size:11px;color:var(--danger);font-family:var(--font-mono)}
+
+/* ── CARDIO CARD ── */
+.cardio-card{background:var(--card);border:1px solid #2A1A3A;border-radius:var(--radius);overflow:hidden}
+.cardio-header{background:#1A0D2B;padding:10px 14px;font-size:11px;font-family:var(--font-mono);color:#C47FFF;text-transform:uppercase;letter-spacing:.08em}
+.cardio-body{padding:12px 14px}
+.cardio-protocol{font-size:13px;margin-bottom:4px}
+.cardio-meta{font-size:11px;font-family:var(--font-mono);color:var(--muted);margin-bottom:12px}
+.cardio-inputs{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+
+/* ── FAB FINISH ── */
+.fab{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--accent);color:#0D0D0F;font-family:var(--font-display);font-size:15px;font-weight:800;padding:14px 32px;border-radius:50px;border:none;cursor:pointer;box-shadow:0 4px 24px rgba(232,255,71,.25);transition:transform .1s,box-shadow .1s;white-space:nowrap;z-index:200}
+.fab:active{transform:translateX(-50%) scale(0.97)}
+
+/* ── SUMMARY SCREEN ── */
+.screen-summary{gap:16px}
+.summary-title{font-family:var(--font-display);font-size:24px;font-weight:800;margin-top:8px}
+.summary-title em{color:var(--accent);font-style:normal}
+.summary-box{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:16px;font-size:12px;font-family:var(--font-mono);color:var(--muted);line-height:1.8;white-space:pre-wrap;word-break:break-word;max-height:55vh;overflow-y:auto}
+.summary-hint{font-size:12px;color:var(--muted);text-align:center}
+.btn-copy{background:var(--accent);color:#0D0D0F;font-family:var(--font-display);font-size:15px;font-weight:800;padding:14px;border-radius:50px;border:none;cursor:pointer;width:100%}
+.btn-copy.copied{background:var(--ok)}
+.btn-back-home{background:transparent;border:1px solid var(--border);color:var(--muted);font-family:var(--font-body);font-size:14px;padding:12px;border-radius:50px;cursor:pointer;width:100%}
+
+/* ── WEEK MODAL ── */
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:300;align-items:flex-end;justify-content:center}
+.modal-bg.open{display:flex}
+.modal{background:var(--surface);border:1px solid var(--border);border-radius:20px 20px 0 0;padding:24px 20px 40px;width:100%;max-width:480px}
+.modal-title{font-family:var(--font-display);font-size:18px;font-weight:800;margin-bottom:16px}
+.week-options{display:flex;flex-direction:column;gap:8px}
+.week-opt{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px 16px;cursor:pointer;font-size:14px;display:flex;justify-content:space-between;align-items:center}
+.week-opt.selected{border-color:var(--accent);color:var(--accent)}
+.modal-close{width:100%;margin-top:16px;background:transparent;border:1px solid var(--border);color:var(--muted);padding:12px;border-radius:10px;font-size:14px;cursor:pointer}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div>
+    <div class="topbar-logo">Coach C.</div>
+    <div class="topbar-sub">registro de treino</div>
+  </div>
+  <div class="week-pill" onclick="openWeekModal()">
+    Semana <span id="week-display">S1</span> ▾
+  </div>
+</div>
+
+<!-- HOME -->
+<div class="screen screen-home active" id="screen-home">
+  <div class="home-greeting">Qual é o<br>treino de <em>hoje?</em></div>
+  <div class="home-hint">Selecione o dia e comece a registrar.</div>
+  <div class="day-grid" id="day-grid"></div>
+</div>
+
+<!-- SESSION -->
+<div class="screen screen-session" id="screen-session">
+  <div class="session-header">
+    <div class="session-back" onclick="goHome()">← voltar</div>
+    <div class="session-title" id="sess-title"></div>
+    <div class="session-meta" id="sess-meta"></div>
+    <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+  </div>
+  <div class="session-body" id="session-body"></div>
+  <button class="fab" onclick="finishSession()">Ver resumo →</button>
+</div>
+
+<!-- SUMMARY -->
+<div class="screen screen-summary" id="screen-summary">
+  <div class="session-back" onclick="goHome()">← novo treino</div>
+  <div class="summary-title">Sessão<br><em>concluída.</em></div>
+  <div class="summary-hint">Copie o texto abaixo e cole para o Coach C. avaliar.</div>
+  <div class="summary-box" id="summary-box"></div>
+  <button class="btn-copy" id="btn-copy" onclick="copyText()">Copiar para o Coach C.</button>
+  <button class="btn-back-home" onclick="goHome()">Registrar outro dia</button>
+</div>
+
+<!-- WEEK MODAL -->
+<div class="modal-bg" id="modal-bg" onclick="closeWeekModal(event)">
+  <div class="modal">
+    <div class="modal-title">Selecionar semana</div>
+    <div class="week-options" id="week-options"></div>
+    <button class="modal-close" onclick="closeWeekModal()">Cancelar</button>
+  </div>
+</div>
+
+<script>
+const WEEKS = [
+  {id:'S1', label:'S1 — Readaptação'},
+  {id:'S2', label:'S2 — Consolidação'},
+  {id:'S3', label:'S3 — Desenvolvimento'},
+  {id:'S4', label:'S4 — Deload'},
+];
+
+const DAYS = [
+  {id:'segunda', label:'Seg', name:'Segunda', type:'Futebol', badge:'bt-futebol',
+   duracao:'~90 min',
+   blocos:[
+     {nome:'Aquecimento', exs:[
+       {n:'Trote leve + mobilidade dinâmica', p:'10 min', sug:'—', alert:null},
+     ]},
+     {nome:'Sessão Principal', exs:[
+       {n:'Futebol — jogo / coletivo', p:'60–90 min', sug:'—', alert:null},
+     ]},
+     {nome:'Volta à Calma', exs:[
+       {n:'Alongamento estático MMII', p:'5–10 min', sug:'—', alert:null},
+     ]},
+   ], cardio:null},
+
+  {id:'terca', label:'Ter', name:'Terça', type:'Inferior — Força', badge:'bt-lower',
+   duracao:'~55–60 min',
+   blocos:[
+     {nome:'Aquecimento', exs:[
+       {n:'Bicicleta / esteira leve', p:'5 min', sug:'55–60% FC máx', alert:null},
+       {n:'Mobilidade dinâmica quadril/tornozelo', p:'3 min', sug:'—', alert:null},
+     ]},
+     {nome:'Bloco A — Compostos', exs:[
+       {n:'Agachamento livre com barra', p:'4×6–8 | RIR 3–5', sug:'S1: ~50–60 kg', alert:'S1: RIR 5 obrigatório'},
+       {n:'Leg press 45°', p:'3×10–12 | RIR 3', sug:'S1: ~60–80 kg', alert:null},
+     ]},
+     {nome:'Bloco B — Isolados', exs:[
+       {n:'Cadeira extensora', p:'3×12 | RIR 3', sug:'S1: ~30–40 kg', alert:null},
+       {n:'Mesa flexora', p:'3×12 | RIR 3', sug:'S1: ~25–35 kg', alert:null},
+       {n:'Panturrilha em pé', p:'4×15 | RIR 2', sug:'S1: ~40–60 kg', alert:null},
+       {n:'Adução de quadril (máquina)', p:'3×15 | RIR 3', sug:'S1: ~30–40 kg', alert:null},
+     ]},
+     {nome:'Core', exs:[
+       {n:'Prancha frontal', p:'3×30–45s', sug:'—', alert:null},
+       {n:'Dead bug', p:'3×8/lado', sug:'—', alert:null},
+     ]},
+   ], cardio:null},
+
+  {id:'quarta', label:'Qua', name:'Quarta', type:'Recuperação + Reab', badge:'bt-reab',
+   duracao:'~50–60 min',
+   blocos:[
+     {nome:'Recuperação Ativa', exs:[
+       {n:'Caminhada / bicicleta leve', p:'20–30 min', sug:'FC ≤ 60% máx', alert:null},
+     ]},
+     {nome:'Protocolo Ombro Direito', exs:[
+       {n:'Rotação externa com elástico', p:'3×15', sug:'Elástico leve', alert:'Cotovelo colado ao tronco'},
+       {n:'Rotação interna com elástico', p:'3×15', sug:'Elástico leve', alert:null},
+       {n:'Side-lying external rotation', p:'3×12/lado', sug:'1–2 kg máx', alert:null},
+       {n:'Serrátil — wall slide', p:'3×10', sug:'—', alert:null},
+       {n:'Face pull com elástico', p:'3×15', sug:'Elástico leve', alert:null},
+     ]},
+     {nome:'Mobilidade', exs:[
+       {n:'Extensão torácica (foam roller)', p:'3 pos. × 30s', sug:'—', alert:null},
+       {n:'Abertura de quadril 90/90', p:'2 min/lado', sug:'—', alert:null},
+     ]},
+   ], cardio:null},
+
+  {id:'quinta', label:'Qui', name:'Quinta', type:'Inferior Potência + Cardio', badge:'bt-potencia',
+   duracao:'~80–85 min',
+   blocos:[
+     {nome:'Aquecimento', exs:[
+       {n:'Monster walk + agach. livre sem carga', p:'8 min', sug:'—', alert:null},
+     ]},
+     {nome:'Bloco A — Potência / Funcional', exs:[
+       {n:'Agachamento búlgaro (halteres)', p:'3×8/lado | RIR 3', sug:'S1: 8–12 kg/lado', alert:'Excêntrico 3s'},
+       {n:'Terra romeno com halteres', p:'3×10 | RIR 3', sug:'S1: 15–20 kg/lado', alert:null},
+       {n:'Step-up com halteres', p:'3×10/lado | RIR 3', sug:'S1: 8–12 kg/lado', alert:null},
+       {n:'Avanço caminhando (lunges)', p:'3×12/lado | RIR 4', sug:'S1: sem carga', alert:'S1 sem carga'},
+       {n:'Extensão de quadril unilateral', p:'3×15/lado', sug:'Carga leve', alert:null},
+     ]},
+   ],
+   cardio:{
+     S1:{proto:'Corrida contínua leve', dur:'12–15 min', int:'60–65% FC máx', obs:'Sem tiros'},
+     S2:{proto:'Corrida + 2 tiros de 20s', dur:'15 min + 2×20s', int:'65–70% FC máx', obs:'Rec. 90s entre tiros'},
+     S3:{proto:'Corrida + 3 tiros de 30s', dur:'18 min + 3×30s', int:'70–75% FC máx', obs:'Rec. 90s entre tiros'},
+     S4:{proto:'Corrida leve (deload)', dur:'12 min', int:'60–65% FC máx', obs:'Sem tiros'},
+   }},
+
+  {id:'sexta', label:'Sex', name:'Sexta', type:'Push + Cardio', badge:'bt-push',
+   duracao:'~60–65 min',
+   blocos:[
+     {nome:'Aquecimento', exs:[
+       {n:'Rotação ativa ombros + mob. torácica', p:'5 min', sug:'—', alert:null},
+       {n:'Ativação manguito com elástico', p:'2×15', sug:'Elástico leve', alert:null},
+     ]},
+     {nome:'Bloco A — Horizontal', exs:[
+       {n:'Supino com halteres', p:'4×8–10 | RIR 3–5', sug:'S1: 10–14 kg/lado', alert:'⚑ Ombro: parar se dor ≥ 3/10'},
+       {n:'Crossover no cabo (médio→baixo)', p:'3×12 | RIR 3', sug:'S1: 8–12 kg/lado', alert:null},
+     ]},
+     {nome:'Bloco B — Vertical', exs:[
+       {n:'Desenvolvimento com halteres (neutro)', p:'3×10 | RIR 3', sug:'S1: 8–12 kg/lado', alert:'⚑ Ombro: parar se dor ≥ 3/10'},
+       {n:'Elevação lateral com halteres', p:'3×15 | RIR 3', sug:'S1: 4–6 kg/lado', alert:null},
+     ]},
+     {nome:'Bloco C — Tríceps', exs:[
+       {n:'Tríceps no cabo (corda/barra)', p:'3×12 | RIR 3', sug:'S1: 15–20 kg', alert:null},
+       {n:'Tríceps francês com haltere', p:'3×12 | RIR 3', sug:'S1: 8–12 kg total', alert:null},
+     ]},
+   ],
+   cardio:{
+     S1:{proto:'Esteira/bicicleta contínuo leve', dur:'15 min', int:'60–65% FC máx', obs:'Recuperação ativa'},
+     S2:{proto:'Esteira/bicicleta contínuo', dur:'15 min', int:'65% FC máx', obs:''},
+     S3:{proto:'Esteira/bicicleta contínuo', dur:'15 min', int:'65–70% FC máx', obs:''},
+     S4:{proto:'Esteira/bicicleta leve (deload)', dur:'12 min', int:'60% FC máx', obs:''},
+   }},
+
+  {id:'sabado', label:'Sáb', name:'Sábado', type:'Pull', badge:'bt-pull',
+   duracao:'~55–60 min',
+   blocos:[
+     {nome:'Aquecimento', exs:[
+       {n:'Ativação escapular + mob. torácica', p:'5 min', sug:'—', alert:null},
+     ]},
+     {nome:'Bloco A — Compostos', exs:[
+       {n:'Remada curvada com halteres', p:'4×8–10 | RIR 3', sug:'S1: 14–18 kg/lado', alert:null},
+       {n:'Pulldown na polia (neutro/supinado)', p:'4×10 | RIR 3', sug:'S1: ~40–50 kg', alert:'Pull-up na barra: aguardar liberação fisio'},
+       {n:'Remada cavalinho / remada baixa cabo', p:'3×12 | RIR 3', sug:'S1: ~40–50 kg', alert:null},
+     ]},
+     {nome:'Bloco B — Auxiliares + Bíceps', exs:[
+       {n:'Pull-over com haltere', p:'3×12 | RIR 3', sug:'S1: 12–16 kg', alert:null},
+       {n:'Rosca direta com halteres', p:'3×12 | RIR 3', sug:'S1: 10–12 kg/lado', alert:null},
+       {n:'Rosca martelo', p:'3×12 | RIR 3', sug:'S1: 10–12 kg/lado', alert:null},
+     ]},
+     {nome:'Deltóide Posterior', exs:[
+       {n:'Face pull no cabo com corda', p:'3×15 | RIR 3', sug:'S1: 10–15 kg', alert:'Não pular — reab ombro'},
+     ]},
+   ], cardio:null},
+
+  {id:'domingo', label:'Dom', name:'Domingo', type:'Descanso', badge:'bt-descanso',
+   duracao:'—',
+   blocos:[
+     {nome:'', exs:[
+       {n:'Descanso completo', p:'—', sug:'Caminhada leve ≤ 30min se quiser', alert:null},
+     ]},
+   ], cardio:null},
+];
+
+// State
+let currentWeek = 'S1';
+let currentDay = null;
+let sessionData = {}; // {exId: {carga, rir, obs}}
+let cardioData = {tempo:'', perc:'', obs:''};
+let doneDays = JSON.parse(localStorage.getItem('done_days')||'[]');
+
+function getTodayId(){
+  const map = ['domingo','segunda','terca','quarta','quinta','sexta','sabado'];
+  return map[new Date().getDay()];
+}
+
+// ── RENDER HOME
+function renderHome(){
+  const todayId = getTodayId();
+  const grid = document.getElementById('day-grid');
+  grid.innerHTML = DAYS.map(d => {
+    const isToday = d.id === todayId;
+    const isDone = doneDays.includes(d.id+'_'+currentWeek);
+    return `<div class="day-btn ${isToday?'today':''} ${isDone?'done':''}" onclick="startSession('${d.id}')">
+      <div class="day-label">${d.label}</div>
+      <div class="day-name">${d.name}</div>
+      <span class="day-type-badge ${d.badge}">${d.type}</span>
+    </div>`;
+  }).join('');
+}
+
+// ── START SESSION
+function startSession(dayId){
+  currentDay = DAYS.find(d => d.id === dayId);
+  sessionData = {};
+  cardioData = {tempo:'', perc:'', obs:''};
+
+  document.getElementById('sess-title').textContent = currentDay.name;
+  document.getElementById('sess-meta').textContent = currentDay.type + ' · ' + currentDay.duracao + ' · ' + WEEKS.find(w=>w.id===currentWeek).label;
+  document.getElementById('progress-fill').style.width = '0%';
+
+  renderSession();
+  showScreen('screen-session');
+  window.scrollTo(0,0);
+}
+
+function renderSession(){
+  const body = document.getElementById('session-body');
+  let html = '';
+  let exIdx = 0;
+
+  currentDay.blocos.forEach(bloco => {
+    html += `<div><div class="bloco-label">${bloco.nome}</div><div class="bloco-exercises">`;
+    bloco.exs.forEach(ex => {
+      const id = 'ex_'+exIdx;
+      exIdx++;
+      const isFutebol = ex.p === '60–90 min' || ex.p === '10 min' || ex.p === '5–10 min';
+      const noInput = ex.sug === '—' && (ex.p.includes('min') && !ex.p.includes('×'));
+      html += `<div class="ex-card" id="card_${id}">
+        <div class="ex-header">
+          <div class="ex-name">${ex.n}</div>
+          <div class="ex-params">${ex.p}</div>
+        </div>
+        ${ex.sug !== '—' ? `<div class="ex-sug">↳ ${ex.sug}</div>` : ''}
+        ${ex.alert ? `<div class="ex-alert">${ex.alert}</div>` : ''}`;
+
+      if(!noInput){
+        html += `<div class="ex-inputs">
+          <div class="input-group">
+            <div class="input-label">Carga usada</div>
+            <input class="input-field" type="text" inputmode="decimal" placeholder="kg / n/a" id="carga_${id}"
+              oninput="updateData('${id}')" onfocus="setActive('card_${id}',true)" onblur="setActive('card_${id}',false)">
+          </div>
+          <div class="input-group">
+            <div class="input-label">RIR real</div>
+            <input class="input-field" type="number" inputmode="numeric" min="0" max="10" placeholder="0–10" id="rir_${id}"
+              oninput="updateData('${id}')" onfocus="setActive('card_${id}',true)" onblur="setActive('card_${id}',false)">
+          </div>
+        </div>
+        <div class="ex-inputs wide" style="padding-top:0">
+          <div class="input-group">
+            <div class="input-label">Observação</div>
+            <input class="input-field" type="text" placeholder="dor, ajuste, sensação..." id="obs_${id}"
+              oninput="updateData('${id}')" onfocus="setActive('card_${id}',true)" onblur="setActive('card_${id}',false)">
+          </div>
+        </div>`;
+      }
+      html += `</div>`;
+    });
+    html += `</div></div>`;
+  });
+
+  // Cardio section
+  if(currentDay.cardio){
+    const c = currentDay.cardio[currentWeek];
+    html += `<div class="cardio-card">
+      <div class="cardio-header">Cardio / Condicionamento</div>
+      <div class="cardio-body">
+        <div class="cardio-protocol">${c.proto}</div>
+        <div class="cardio-meta">${c.dur} · ${c.int}${c.obs ? ' · '+c.obs : ''}</div>
+        <div class="cardio-inputs">
+          <div class="input-group">
+            <div class="input-label">Tempo real</div>
+            <input class="input-field" type="text" inputmode="decimal" placeholder="min" id="cardio_tempo"
+              oninput="updateCardio()">
+          </div>
+          <div class="input-group">
+            <div class="input-label">Esforço (1–10)</div>
+            <input class="input-field" type="number" inputmode="numeric" min="1" max="10" placeholder="1–10" id="cardio_perc"
+              oninput="updateCardio()">
+          </div>
+        </div>
+        <div class="ex-inputs wide" style="padding:8px 0 0">
+          <div class="input-group">
+            <div class="input-label">Obs cardio</div>
+            <input class="input-field" type="text" placeholder="como foi..." id="cardio_obs"
+              oninput="updateCardio()">
+          </div>
+        </div>
+      </div>
+    </div>`;
+  }
+
+  body.innerHTML = html;
+  updateProgress();
+}
+
+function setActive(cardId, active){
+  const card = document.getElementById(cardId);
+  if(card) card.classList.toggle('active-input', active);
+}
+
+function updateData(id){
+  const carga = document.getElementById('carga_'+id)?.value||'';
+  const rir = document.getElementById('rir_'+id)?.value||'';
+  const obs = document.getElementById('obs_'+id)?.value||'';
+  sessionData[id] = {carga, rir, obs};
+  const card = document.getElementById('card_'+id);
+  if(card) card.classList.toggle('filled', !!(carga||rir));
+  updateProgress();
+}
+
+function updateCardio(){
+  cardioData.tempo = document.getElementById('cardio_tempo')?.value||'';
+  cardioData.perc = document.getElementById('cardio_perc')?.value||'';
+  cardioData.obs = document.getElementById('cardio_obs')?.value||'';
+}
+
+function updateProgress(){
+  const total = Object.keys(sessionData).length;
+  const filled = Object.values(sessionData).filter(d=>d.carga||d.rir).length;
+  const pct = total > 0 ? Math.round((filled/total)*100) : 0;
+  document.getElementById('progress-fill').style.width = pct+'%';
+}
+
+// ── FINISH SESSION → SUMMARY
+function finishSession(){
+  const week = WEEKS.find(w=>w.id===currentWeek);
+  let lines = [];
+  lines.push(`📋 RESUMO DE TREINO — Coach C.`);
+  lines.push(`Dia: ${currentDay.name} | ${currentDay.type}`);
+  lines.push(`Semana: ${week.label}`);
+  lines.push(`Data: ${new Date().toLocaleDateString('pt-BR')}`);
+  lines.push('');
+
+  let exIdx = 0;
+  currentDay.blocos.forEach(bloco => {
+    if(bloco.nome) lines.push(`── ${bloco.nome.toUpperCase()} ──`);
+    bloco.exs.forEach(ex => {
+      const id = 'ex_'+exIdx;
+      const d = sessionData[id]||{};
+      let line = `• ${ex.n} (${ex.p})`;
+      if(d.carga) line += ` → ${d.carga}`;
+      if(d.rir !== undefined && d.rir !== '') line += ` | RIR real: ${d.rir}`;
+      if(d.obs) line += ` | obs: ${d.obs}`;
+      lines.push(line);
+      exIdx++;
+    });
+    lines.push('');
+  });
+
+  if(currentDay.cardio){
+    const c = currentDay.cardio[currentWeek];
+    lines.push(`── CARDIO ──`);
+    lines.push(`Protocolo: ${c.proto}`);
+    if(cardioData.tempo) lines.push(`Tempo real: ${cardioData.tempo} min`);
+    if(cardioData.perc) lines.push(`Esforço percebido: ${cardioData.perc}/10`);
+    if(cardioData.obs) lines.push(`Obs: ${cardioData.obs}`);
+    lines.push('');
+  }
+
+  // Mark done
+  const key = currentDay.id+'_'+currentWeek;
+  if(!doneDays.includes(key)) doneDays.push(key);
+  localStorage.setItem('done_days', JSON.stringify(doneDays));
+
+  document.getElementById('summary-box').textContent = lines.join('\n');
+  document.getElementById('btn-copy').textContent = 'Copiar para o Coach C.';
+  document.getElementById('btn-copy').classList.remove('copied');
+  showScreen('screen-summary');
+  window.scrollTo(0,0);
+}
+
+function copyText(){
+  const text = document.getElementById('summary-box').textContent;
+  navigator.clipboard.writeText(text).then(()=>{
+    const btn = document.getElementById('btn-copy');
+    btn.textContent = '✓ Copiado!';
+    btn.classList.add('copied');
+  });
+}
+
+// ── WEEK MODAL
+function openWeekModal(){
+  const opts = document.getElementById('week-options');
+  opts.innerHTML = WEEKS.map(w=>`
+    <div class="week-opt ${w.id===currentWeek?'selected':''}" onclick="selectWeek('${w.id}')">
+      ${w.label} ${w.id===currentWeek?'✓':''}
+    </div>`).join('');
+  document.getElementById('modal-bg').classList.add('open');
+}
+function closeWeekModal(e){
+  if(!e || e.target===document.getElementById('modal-bg'))
+    document.getElementById('modal-bg').classList.remove('open');
+}
+function selectWeek(wid){
+  currentWeek = wid;
+  document.getElementById('week-display').textContent = wid;
+  closeWeekModal();
+  renderHome();
+}
+
+// ── NAVIGATION
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+function goHome(){
+  showScreen('screen-home');
+  renderHome();
+  window.scrollTo(0,0);
+}
+
+// ── INIT
+renderHome();
+</script>
+</body>
+</html>
