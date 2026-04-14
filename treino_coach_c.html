@@ -8,8 +8,8 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 :root{
-  --bg:#0D0D0F;--surface:#17171A;--card:#1E1E22;--border:#2A2A30;
-  --text:#F0F0F0;--muted:#6B6B75;--accent:#E8FF47;--accent-dim:#9AAA1E;
+  --bg:#0A0A0A;--surface:#141414;--card:#1C1C1C;--border:#2E2E2E;
+  --text:#F5F5F5;--muted:#6B6B6B;--accent:#E8153A;--accent-dim:#A01028;
   --danger:#FF5252;--ok:#47FFAB;--warn:#FFB347;
   --radius:14px;--font-display:'Syne',sans-serif;--font-body:'DM Sans',sans-serif;--font-mono:'DM Mono',monospace;
 }
@@ -28,7 +28,7 @@ body{display:flex;flex-direction:column;min-height:100vh}
 .screen.active{display:flex}
 
 /* ── DAY PICKER ── */
-.screen-home{gap:12px}
+.screen-home{gap:12px;padding-bottom:80px}
 .home-greeting{font-family:var(--font-display);font-size:26px;font-weight:800;line-height:1.1;margin-bottom:4px}
 .home-greeting em{color:var(--accent);font-style:normal}
 .home-hint{font-size:13px;color:var(--muted);margin-bottom:8px}
@@ -92,7 +92,7 @@ body{display:flex;flex-direction:column;min-height:100vh}
 .cardio-inputs{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 
 /* ── FAB FINISH ── */
-.fab{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--accent);color:#0D0D0F;font-family:var(--font-display);font-size:15px;font-weight:800;padding:14px 32px;border-radius:50px;border:none;cursor:pointer;box-shadow:0 4px 24px rgba(232,255,71,.25);transition:transform .1s,box-shadow .1s;white-space:nowrap;z-index:200}
+.fab{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--accent);color:#fff;font-family:var(--font-display);font-size:15px;font-weight:800;padding:14px 32px;border-radius:50px;border:none;cursor:pointer;box-shadow:0 4px 24px rgba(232,21,58,.35);transition:transform .1s,box-shadow .1s;white-space:nowrap;z-index:200}
 .fab:active{transform:translateX(-50%) scale(0.97)}
 
 /* ── SUMMARY SCREEN ── */
@@ -101,7 +101,7 @@ body{display:flex;flex-direction:column;min-height:100vh}
 .summary-title em{color:var(--accent);font-style:normal}
 .summary-box{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:16px;font-size:12px;font-family:var(--font-mono);color:var(--muted);line-height:1.8;white-space:pre-wrap;word-break:break-word;max-height:55vh;overflow-y:auto}
 .summary-hint{font-size:12px;color:var(--muted);text-align:center}
-.btn-copy{background:var(--accent);color:#0D0D0F;font-family:var(--font-display);font-size:15px;font-weight:800;padding:14px;border-radius:50px;border:none;cursor:pointer;width:100%}
+.btn-copy{background:var(--accent);color:#fff;font-family:var(--font-display);font-size:15px;font-weight:800;padding:14px;border-radius:50px;border:none;cursor:pointer;width:100%}
 .btn-copy.copied{background:var(--ok)}
 .btn-back-home{background:transparent;border:1px solid var(--border);color:var(--muted);font-family:var(--font-body);font-size:14px;padding:12px;border-radius:50px;cursor:pointer;width:100%}
 
@@ -115,7 +115,67 @@ body{display:flex;flex-direction:column;min-height:100vh}
 .ex-feedback-btn{background:transparent;border:none;color:var(--muted);font-size:11px;font-family:var(--font-mono);cursor:pointer;padding:4px 8px;border-radius:6px;border:1px solid var(--border);transition:color .15s,border-color .15s}
 .ex-feedback-btn:active{color:var(--accent);border-color:var(--accent)}
 
-/* ── WEEK MODAL ── */
+/* ── BOTTOM NAV ── */
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:var(--bg);border-top:1px solid var(--border);display:flex;z-index:150;padding-bottom:env(safe-area-inset-bottom)}
+.nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:10px 0;cursor:pointer;color:var(--muted);font-size:10px;font-family:var(--font-mono);border:none;background:transparent;transition:color .15s}
+.nav-btn.active{color:var(--accent)}
+.nav-icon{font-size:18px;line-height:1}
+
+/* ── SUPPLEMENTS SCREEN ── */
+.screen-supls{gap:16px;padding-bottom:80px}
+.supls-title{font-family:var(--font-display);font-size:24px;font-weight:800;line-height:1.1;margin-top:4px}
+.supls-title em{color:var(--accent);font-style:normal}
+.supls-date{font-size:12px;font-family:var(--font-mono);color:var(--muted);margin-bottom:4px}
+.supl-group-label{font-size:10px;font-family:var(--font-mono);color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px;padding-left:2px}
+.supl-group{display:flex;flex-direction:column;gap:8px;margin-bottom:4px}
+.supl-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:14px;display:flex;align-items:center;gap:12px;cursor:pointer;transition:border-color .15s}
+.supl-card.checked{border-color:var(--accent);background:#1C0A0D}
+.supl-check{width:22px;height:22px;border-radius:50%;border:2px solid var(--border);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .15s}
+.supl-card.checked .supl-check{background:var(--accent);border-color:var(--accent)}
+.supl-check-mark{color:#fff;font-size:12px;font-weight:700;display:none}
+.supl-card.checked .supl-check-mark{display:block}
+.supl-info{flex:1}
+.supl-name{font-size:14px;font-weight:500}
+.supl-dose{font-size:11px;font-family:var(--font-mono);color:var(--muted);margin-top:2px}
+.supl-alarm-btn{background:transparent;border:1px solid var(--border);border-radius:8px;padding:6px 10px;font-size:11px;font-family:var(--font-mono);color:var(--muted);cursor:pointer;white-space:nowrap;transition:border-color .15s,color .15s}
+.supl-alarm-btn:active{border-color:var(--accent);color:var(--accent)}
+
+/* ── ALARM MODAL ── */
+.alarm-modal{background:var(--surface);border:1px solid var(--border);border-radius:20px 20px 0 0;padding:24px 20px 40px;width:100%;max-width:480px}
+.alarm-title{font-family:var(--font-display);font-size:18px;font-weight:800;margin-bottom:6px}
+.alarm-sub{font-size:12px;color:var(--muted);font-family:var(--font-mono);margin-bottom:20px}
+.alarm-time-input{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px;font-size:28px;font-family:var(--font-mono);color:var(--text);width:100%;text-align:center;outline:none;margin-bottom:12px}
+.alarm-confirm{background:var(--accent);color:#fff;font-family:var(--font-display);font-size:15px;font-weight:800;padding:14px;border-radius:50px;border:none;cursor:pointer;width:100%;margin-bottom:8px}
+.alarm-cancel{background:transparent;border:1px solid var(--border);color:var(--muted);font-size:14px;padding:12px;border-radius:50px;cursor:pointer;width:100%}
+
+/* ── WATER SCREEN ── */
+.screen-agua{gap:16px;padding-bottom:80px}
+.agua-title{font-family:var(--font-display);font-size:24px;font-weight:800;line-height:1.1;margin-top:4px}
+.agua-title em{color:#47C2FF;font-style:normal}
+.agua-meta{font-size:12px;font-family:var(--font-mono);color:var(--muted)}
+.agua-progress-wrap{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px;display:flex;flex-direction:column;align-items:center;gap:12px}
+.agua-bottles{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.bottle{display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;transition:transform .1s}
+.bottle:active{transform:scale(0.93)}
+.bottle-icon{font-size:36px;line-height:1;filter:grayscale(1);opacity:.35;transition:filter .2s,opacity .2s}
+.bottle.done .bottle-icon{filter:none;opacity:1}
+.bottle-label{font-size:10px;font-family:var(--font-mono);color:var(--muted)}
+.bottle.done .bottle-label{color:#47C2FF}
+.agua-bar-wrap{width:100%;background:var(--border);border-radius:4px;height:6px;overflow:hidden}
+.agua-bar{height:100%;background:#47C2FF;border-radius:4px;transition:width .4s ease}
+.agua-count{font-family:var(--font-display);font-size:32px;font-weight:800;color:#47C2FF}
+.agua-count-sub{font-size:12px;font-family:var(--font-mono);color:var(--muted)}
+.agua-reminder-section{display:flex;flex-direction:column;gap:8px}
+.agua-reminder-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:14px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.agua-reminder-card.done-time{border-color:#1A3A4A;opacity:.6}
+.agua-reminder-info{display:flex;flex-direction:column;gap:2px}
+.agua-reminder-time{font-size:16px;font-family:var(--font-mono);font-weight:500}
+.agua-reminder-desc{font-size:11px;color:var(--muted);font-family:var(--font-mono)}
+.agua-alarm-btn{background:transparent;border:1px solid var(--border);border-radius:8px;padding:7px 12px;font-size:11px;font-family:var(--font-mono);color:var(--muted);cursor:pointer;white-space:nowrap}
+.agua-alarm-btn:active{border-color:#47C2FF;color:#47C2FF}
+.agua-set-all{background:transparent;border:1px solid #47C2FF;color:#47C2FF;font-family:var(--font-display);font-size:14px;font-weight:700;padding:12px;border-radius:50px;cursor:pointer;width:100%}
+.agua-set-all:active{background:rgba(71,194,255,.1)}
+
 .modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:300;align-items:flex-end;justify-content:center}
 .modal-bg.open{display:flex}
 .modal{background:var(--surface);border:1px solid var(--border);border-radius:20px 20px 0 0;padding:24px 20px 40px;width:100%;max-width:480px}
@@ -124,6 +184,67 @@ body{display:flex;flex-direction:column;min-height:100vh}
 .week-opt{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px 16px;cursor:pointer;font-size:14px;display:flex;justify-content:space-between;align-items:center}
 .week-opt.selected{border-color:var(--accent);color:var(--accent)}
 .modal-close{width:100%;margin-top:16px;background:transparent;border:1px solid var(--border);color:var(--muted);padding:12px;border-radius:10px;font-size:14px;cursor:pointer}
+
+/* ── NUTRIÇÃO ── */
+.screen-nutri{gap:14px;padding-bottom:80px}
+.nutri-title{font-family:var(--font-display);font-size:24px;font-weight:800;line-height:1.1;margin-top:4px}
+.nutri-title em{color:#F5A623;font-style:normal}
+.nutri-day-badge{display:inline-block;padding:4px 12px;border-radius:20px;font-size:11px;font-family:var(--font-mono);margin-bottom:4px}
+.nutri-normal{background:#1A2B0D;color:#8FE047}
+.nutri-futebol{background:#0D1A2B;color:#47C2FF}
+.refeicao-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;transition:border-color .2s}
+.refeicao-card.done-meal{border-color:#2A3A10}
+.refeicao-header{padding:12px 14px 10px;display:flex;align-items:center;gap:10px;cursor:pointer}
+.refeicao-check{width:20px;height:20px;border-radius:50%;border:2px solid var(--border);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:10px;color:#fff;transition:all .15s}
+.refeicao-card.done-meal .refeicao-check{background:#8FE047;border-color:#8FE047}
+.refeicao-info{flex:1}
+.refeicao-time{font-size:12px;font-family:var(--font-mono);color:var(--muted)}
+.refeicao-name{font-size:14px;font-weight:500;margin-top:1px}
+.refeicao-expand{font-size:11px;color:var(--muted);margin-left:auto}
+.refeicao-body{padding:0 14px 12px;display:none;flex-direction:column;gap:6px}
+.refeicao-body.open{display:flex}
+.opcao-tabs{display:flex;gap:6px;margin-bottom:8px;flex-wrap:wrap}
+.opcao-tab{padding:4px 10px;border-radius:20px;font-size:10px;font-family:var(--font-mono);cursor:pointer;border:1px solid var(--border);color:var(--muted);background:transparent;transition:all .15s}
+.opcao-tab.active{background:var(--accent);border-color:var(--accent);color:#fff}
+.opcao-content{display:none}
+.opcao-content.active{display:block}
+.food-row{display:flex;justify-content:space-between;align-items:flex-start;padding:5px 0;border-bottom:0.5px solid var(--border);gap:8px}
+.food-row:last-child{border-bottom:none}
+.food-name{font-size:12px;flex:1}
+.food-qty{font-size:11px;font-family:var(--font-mono);color:var(--muted);white-space:nowrap}
+.sub-label{font-size:10px;font-family:var(--font-mono);color:var(--accent-dim);margin-top:6px;margin-bottom:3px;text-transform:uppercase;letter-spacing:.05em}
+.sub-text{font-size:11px;color:var(--muted);line-height:1.5}
+.obs-field{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:8px 10px;font-size:13px;color:var(--text);width:100%;outline:none;margin-top:6px;font-family:var(--font-body)}
+
+/* ── SAUNA ── */
+.screen-sauna{gap:14px;padding-bottom:80px}
+.sauna-title{font-family:var(--font-display);font-size:24px;font-weight:800;line-height:1.1;margin-top:4px}
+.sauna-title em{color:#FF7043;font-style:normal}
+.sauna-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:14px}
+.sauna-section-label{font-size:10px;font-family:var(--font-mono);color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px}
+.sauna-info-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:0.5px solid var(--border)}
+.sauna-info-row:last-child{border-bottom:none}
+.sauna-info-label{font-size:12px;color:var(--muted)}
+.sauna-info-val{font-size:13px;font-weight:500;font-family:var(--font-mono)}
+.sauna-timer-wrap{display:flex;flex-direction:column;align-items:center;gap:12px;padding:16px 0}
+.sauna-timer{font-family:var(--font-display);font-size:56px;font-weight:800;color:#FF7043;line-height:1}
+.sauna-timer-label{font-size:12px;font-family:var(--font-mono);color:var(--muted)}
+.sauna-round-dots{display:flex;gap:8px}
+.sauna-dot{width:10px;height:10px;border-radius:50%;background:var(--border);transition:background .3s}
+.sauna-dot.done{background:#FF7043}
+.sauna-dot.active{background:#FF7043;box-shadow:0 0 8px rgba(255,112,67,.5)}
+.sauna-btn{width:100%;padding:14px;border-radius:50px;border:none;cursor:pointer;font-family:var(--font-display);font-size:15px;font-weight:800;transition:transform .1s}
+.sauna-btn:active{transform:scale(0.97)}
+.sauna-btn-start{background:#FF7043;color:#fff}
+.sauna-btn-pause{background:var(--surface);border:1px solid var(--border);color:var(--text)}
+.sauna-btn-reset{background:transparent;border:1px solid var(--border);color:var(--muted);font-size:13px;padding:10px}
+.sauna-alert{background:#2B1A0D;border-left:3px solid #FF7043;border-radius:0 8px 8px 0;padding:10px 12px;font-size:12px;color:#FFB347;line-height:1.5}
+.sauna-week-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.sauna-day-btn{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:8px 4px;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;transition:border-color .15s}
+.sauna-day-btn.done-sauna{border-color:#FF7043;background:#1A0D07}
+.sauna-day-label{font-size:9px;font-family:var(--font-mono);color:var(--muted);text-transform:uppercase}
+.sauna-day-icon{font-size:14px}
+.sauna-day-btn.done-sauna .sauna-day-label{color:#FF7043}
 </style>
 </head>
 <body>
@@ -136,6 +257,25 @@ body{display:flex;flex-direction:column;min-height:100vh}
   <div class="week-pill" onclick="openWeekModal()">
     Semana <span id="week-display">S1</span> ▾
   </div>
+</div>
+
+<!-- BOTTOM NAV -->
+<div class="bottom-nav" id="bottom-nav">
+  <button class="nav-btn active" id="nav-treino" onclick="switchTab('treino')">
+    <span class="nav-icon">🏋️</span>treino
+  </button>
+  <button class="nav-btn" id="nav-supls" onclick="switchTab('supls')">
+    <span class="nav-icon">💊</span>supl.
+  </button>
+  <button class="nav-btn" id="nav-agua" onclick="switchTab('agua')">
+    <span class="nav-icon">💧</span>água
+  </button>
+  <button class="nav-btn" id="nav-nutri" onclick="switchTab('nutri')">
+    <span class="nav-icon">🍽️</span>dieta
+  </button>
+  <button class="nav-btn" id="nav-sauna" onclick="switchTab('sauna')">
+    <span class="nav-icon">🧖</span>sauna
+  </button>
 </div>
 
 <!-- HOME -->
@@ -165,6 +305,108 @@ body{display:flex;flex-direction:column;min-height:100vh}
   <div class="summary-box" id="summary-box"></div>
   <button class="btn-copy" id="btn-copy" onclick="copyText()">Copiar para o Coach C.</button>
   <button class="btn-back-home" onclick="goHome()">Registrar outro dia</button>
+</div>
+
+<!-- SUPPLEMENTS -->
+<div class="screen screen-supls" id="screen-supls">
+  <div class="supls-date" id="supls-date"></div>
+  <div class="supls-title">Suplementos<br>de <em>hoje.</em></div>
+
+  <div>
+    <div class="supl-group-label">Manhã — 08h30</div>
+    <div class="supl-group" id="supl-manha"></div>
+    <button class="supl-alarm-btn" style="width:100%;margin-top:6px" onclick="setAlarm('Suplementos manhã','08:30')">⏰ Alarme às 08h30</button>
+  </div>
+
+  <div>
+    <div class="supl-group-label">Pós-treino / tarde</div>
+    <div class="supl-group" id="supl-postreino"></div>
+    <button class="supl-alarm-btn" style="width:100%;margin-top:6px" onclick="openAlarmModal('postreino','Whey pós-treino')">⏰ Definir alarme pós-treino</button>
+  </div>
+
+  <div>
+    <div class="supl-group-label">Antes de dormir</div>
+    <div class="supl-group" id="supl-noite"></div>
+    <button class="supl-alarm-btn" style="width:100%;margin-top:6px" onclick="openAlarmModal('noite','Magnésio + Melatonina')">⏰ Definir alarme para hoje</button>
+  </div>
+</div>
+
+<!-- WATER -->
+<div class="screen screen-agua" id="screen-agua">
+  <div class="supls-date" id="agua-date"></div>
+  <div class="agua-title">Hidratação<br>de <em>hoje.</em></div>
+  <div class="agua-meta">Meta: 3,2L · 4 garrafas de 800ml</div>
+
+  <div class="agua-progress-wrap">
+    <div class="agua-bottles" id="agua-bottles"></div>
+    <div class="agua-bar-wrap"><div class="agua-bar" id="agua-bar" style="width:0%"></div></div>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:2px;margin-top:4px">
+      <div class="agua-count" id="agua-count">0</div>
+      <div class="agua-count-sub" id="agua-count-sub">de 4 garrafas completadas</div>
+    </div>
+  </div>
+
+  <div>
+    <div class="supl-group-label">Lembretes do dia</div>
+    <div class="agua-reminder-section" id="agua-reminders"></div>
+  </div>
+
+  <button class="agua-set-all" onclick="setAllWaterAlarms()">⏰ Programar todos os alarmes</button>
+</div>
+
+<!-- NUTRIÇÃO -->
+<div class="screen screen-nutri" id="screen-nutri">
+  <div class="supls-date" id="nutri-date"></div>
+  <div class="nutri-title">Dieta de <em>hoje.</em></div>
+  <div id="nutri-day-badge"></div>
+  <div id="nutri-refeicoes"></div>
+</div>
+
+<!-- SAUNA -->
+<div class="screen screen-sauna" id="screen-sauna">
+  <div class="supls-date" id="sauna-date"></div>
+  <div class="sauna-title">Sauna <em>úmida.</em></div>
+
+  <div class="sauna-card">
+    <div class="sauna-section-label">Protocolo</div>
+    <div class="sauna-info-row"><span class="sauna-info-label">Tipo</span><span class="sauna-info-val">Úmida (~45–55°C)</span></div>
+    <div class="sauna-info-row"><span class="sauna-info-label">Rounds</span><span class="sauna-info-val">2 × 15 min</span></div>
+    <div class="sauna-info-row"><span class="sauna-info-label">Descanso entre rounds</span><span class="sauna-info-val">5–8 min fora</span></div>
+    <div class="sauna-info-row"><span class="sauna-info-label">Hidratação antes</span><span class="sauna-info-val">500ml</span></div>
+    <div class="sauna-info-row"><span class="sauna-info-label">Hidratação depois</span><span class="sauna-info-val">500ml</span></div>
+    <div class="sauna-info-row"><span class="sauna-info-label">Frequência</span><span class="sauna-info-val">2–3× por semana</span></div>
+  </div>
+
+  <div class="sauna-card">
+    <div class="sauna-section-label">Timer da sessão</div>
+    <div class="sauna-timer-wrap">
+      <div class="sauna-round-dots" id="sauna-dots"></div>
+      <div class="sauna-timer" id="sauna-timer">15:00</div>
+      <div class="sauna-timer-label" id="sauna-phase-label">Round 1 — na sauna</div>
+    </div>
+    <button class="sauna-btn sauna-btn-start" id="sauna-main-btn" onclick="saunaToggle()">Iniciar round 1</button>
+    <div style="margin-top:8px">
+      <button class="sauna-btn sauna-btn-reset" onclick="saunaReset()">Reiniciar</button>
+    </div>
+  </div>
+
+  <div class="sauna-card">
+    <div class="sauna-section-label">Registro semanal</div>
+    <div class="sauna-week-grid" id="sauna-week-grid"></div>
+  </div>
+
+  <div class="sauna-alert">⚑ Ombro direito: calor pode aliviar dor temporariamente — não interprete como melhora. Reab continua obrigatória.<br><br>⚑ Via aérea: se sentir desconforto respiratório, saia imediatamente.<br><br>⚑ Segunda-feira: use à tarde (antes do jantar), nunca após o jogo.</div>
+</div>
+
+<!-- ALARM MODAL -->
+<div class="modal-bg" id="alarm-modal-bg" onclick="closeAlarmModal(event)">
+  <div class="alarm-modal">
+    <div class="alarm-title" id="alarm-modal-title">Definir alarme</div>
+    <div class="alarm-sub" id="alarm-modal-sub">Que horas você quer ser lembrado?</div>
+    <input class="alarm-time-input" type="time" id="alarm-time-input">
+    <button class="alarm-confirm" onclick="confirmAlarm()">Criar alarme no Relógio</button>
+    <button class="alarm-cancel" onclick="closeAlarmModal()">Cancelar</button>
+  </div>
 </div>
 
 <!-- WEEK MODAL -->
@@ -604,8 +846,561 @@ function goHome(){
   window.scrollTo(0,0);
 }
 
+// ── SUPPLEMENTS
+const SUPLS = {
+  manha: [
+    {id:'creatina', name:'Creatina monohidratada', dose:'3–5g'},
+    {id:'omega3',   name:'Ômega-3 (EPA+DHA)',      dose:'2 cápsulas Emana (2,2g EPA+DHA)'},
+    {id:'vitd',     name:'Vitamina D3',             dose:'2.000–4.000 UI'},
+    {id:'whey_m',   name:'Whey protein',            dose:'1 dose — se tomar de manhã'},
+  ],
+  postreino: [
+    {id:'whey_p', name:'Whey protein', dose:'1 dose pós-treino'},
+  ],
+  noite: [
+    {id:'magnesio',  name:'Magnésio glicinato',  dose:'300–400mg'},
+    {id:'melatonina',name:'Melatonina',           dose:'2,5mg (½ cápsula de 5mg)'},
+  ],
+};
+
+let suplChecked = JSON.parse(localStorage.getItem('supl_'+todayKey())||'{}');
+let alarmContext = {id:'', label:''};
+
+function todayKey(){
+  return new Date().toISOString().slice(0,10);
+}
+
+function renderSupls(){
+  const today = new Date();
+  document.getElementById('supls-date').textContent =
+    today.toLocaleDateString('pt-BR',{weekday:'long',day:'numeric',month:'long'});
+
+  ['manha','postreino','noite'].forEach(group => {
+    const container = document.getElementById('supl-'+group);
+    container.innerHTML = SUPLS[group].map(s => {
+      const checked = !!suplChecked[s.id];
+      return `<div class="supl-card ${checked?'checked':''}" id="scard_${s.id}" onclick="toggleSupl('${s.id}')">
+        <div class="supl-check"><span class="supl-check-mark">✓</span></div>
+        <div class="supl-info">
+          <div class="supl-name">${s.name}</div>
+          <div class="supl-dose">${s.dose}</div>
+        </div>
+      </div>`;
+    }).join('');
+  });
+}
+
+function toggleSupl(id){
+  suplChecked[id] = !suplChecked[id];
+  localStorage.setItem('supl_'+todayKey(), JSON.stringify(suplChecked));
+  const card = document.getElementById('scard_'+id);
+  card.classList.toggle('checked', !!suplChecked[id]);
+}
+
+function setAlarm(label, time){
+  const [h,m] = time.split(':');
+  const url = `clock-alarm://add?hour=${h}&minute=${m}&label=${encodeURIComponent(label)}`;
+  // iOS fallback: use x-apple-alarm URL scheme
+  const link = document.createElement('a');
+  link.href = url;
+  link.click();
+  // Fallback: show confirmation
+  setTimeout(()=>{
+    showAlarmFallback(label, time);
+  }, 500);
+}
+
+function openAlarmModal(id, label){
+  alarmContext = {id, label};
+  document.getElementById('alarm-modal-title').textContent = label;
+  document.getElementById('alarm-modal-sub').textContent = 'Que horas você quer ser lembrado hoje?';
+  const now = new Date();
+  const hh = String(now.getHours()).padStart(2,'0');
+  const mm = String(now.getMinutes()).padStart(2,'0');
+  document.getElementById('alarm-time-input').value = `${hh}:${mm}`;
+  document.getElementById('alarm-modal-bg').classList.add('open');
+}
+
+function closeAlarmModal(e){
+  if(!e || e.target===document.getElementById('alarm-modal-bg'))
+    document.getElementById('alarm-modal-bg').classList.remove('open');
+}
+
+function confirmAlarm(){
+  const time = document.getElementById('alarm-time-input').value;
+  if(!time){ return; }
+  const [h,m] = time.split(':');
+  const label = alarmContext.label;
+  closeAlarmModal();
+
+  // Try iOS clock URL scheme
+  const url = `clock-alarm://`;
+  window.location.href = url;
+
+  // Immediate fallback: show instructions
+  setTimeout(()=>{ showAlarmFallback(label, time); }, 300);
+}
+
+function showAlarmFallback(label, time){
+  const btn = document.querySelector(`[onclick*="openAlarmModal('${alarmContext.id}"]`) ||
+              document.querySelector(`[onclick*="setAlarm"]`);
+  // Show a temporary message on the alarm button
+  const allBtns = document.querySelectorAll('.supl-alarm-btn');
+  allBtns.forEach(b => {
+    if(b.textContent.includes('Definir') || b.textContent.includes('08h30')){
+      const orig = b.textContent;
+      b.textContent = `✓ Alarme: ${time} — abra o Relógio para confirmar`;
+      b.style.color = 'var(--ok)';
+      b.style.borderColor = 'var(--ok)';
+      setTimeout(()=>{
+        b.textContent = orig;
+        b.style.color = '';
+        b.style.borderColor = '';
+      }, 4000);
+    }
+  });
+}
+
+// ── WATER
+const AGUA_REMINDERS = [
+  {time:'08:00', label:'Garrafa 1 — ao acordar', garrafa:1},
+  {time:'11:30', label:'Garrafa 2', garrafa:2},
+  {time:'15:00', label:'Garrafa 3', garrafa:3},
+  {time:'18:30', label:'Garrafa 4', garrafa:4},
+  {time:'20:30', label:'Pré-atividade (futebol/treino noturno)', garrafa:null},
+];
+
+let aguaChecked = JSON.parse(localStorage.getItem('agua_'+todayKey())||'{}');
+
+function renderAgua(){
+  const today = new Date();
+  document.getElementById('agua-date').textContent =
+    today.toLocaleDateString('pt-BR',{weekday:'long',day:'numeric',month:'long'});
+
+  // Bottles
+  const bottles = document.getElementById('agua-bottles');
+  bottles.innerHTML = [1,2,3,4].map(i => {
+    const done = !!aguaChecked['g'+i];
+    return `<div class="bottle ${done?'done':''}" id="bottle_${i}" onclick="toggleBottle(${i})">
+      <div class="bottle-icon">🍶</div>
+      <div class="bottle-label">800ml</div>
+    </div>`;
+  }).join('');
+
+  updateAguaProgress();
+
+  // Reminders
+  const now = new Date();
+  const container = document.getElementById('agua-reminders');
+  container.innerHTML = AGUA_REMINDERS.map((r,i) => {
+    const [h,m] = r.time.split(':');
+    const rTime = new Date(); rTime.setHours(+h,+m,0);
+    const isPast = now > rTime;
+    return `<div class="agua-reminder-card ${isPast?'done-time':''}">
+      <div class="agua-reminder-info">
+        <div class="agua-reminder-time">${r.time}</div>
+        <div class="agua-reminder-desc">${r.label}</div>
+      </div>
+      <button class="agua-alarm-btn" onclick="setWaterAlarm(${i})">⏰ alarme</button>
+    </div>`;
+  }).join('');
+}
+
+function toggleBottle(n){
+  aguaChecked['g'+n] = !aguaChecked['g'+n];
+  localStorage.setItem('agua_'+todayKey(), JSON.stringify(aguaChecked));
+  const el = document.getElementById('bottle_'+n);
+  if(el) el.classList.toggle('done', !!aguaChecked['g'+n]);
+  updateAguaProgress();
+}
+
+function updateAguaProgress(){
+  const done = [1,2,3,4].filter(i=>!!aguaChecked['g'+i]).length;
+  const pct = Math.round((done/4)*100);
+  document.getElementById('agua-bar').style.width = pct+'%';
+  document.getElementById('agua-count').textContent = done;
+  document.getElementById('agua-count-sub').textContent =
+    done === 4 ? '🎯 meta atingida!' : `de 4 garrafas — ${(done*0.8).toFixed(1)}L`;
+}
+
+function setWaterAlarm(idx){
+  const r = AGUA_REMINDERS[idx];
+  const label = encodeURIComponent('💧 '+r.label);
+  const [h,m] = r.time.split(':');
+  // Try iOS shortcuts / webcal fallback
+  const icsContent = `BEGIN:VCALENDAR\nVERSION:2.0\nBEGIN:VALARM\nTRIGGER:PT0S\nACTION:DISPLAY\nDESCRIPTION:💧 ${r.label}\nEND:VALARM\nEND:VCALENDAR`;
+  // Simplest: open clock app
+  window.location.href = `clock-alarm://`;
+  const btn = event.target;
+  const orig = btn.textContent;
+  btn.textContent = `✓ ${r.time}`;
+  btn.style.color = '#47C2FF';
+  btn.style.borderColor = '#47C2FF';
+  setTimeout(()=>{
+    btn.textContent = orig;
+    btn.style.color = '';
+    btn.style.borderColor = '';
+  }, 3000);
+}
+
+function setAllWaterAlarms(){
+  // Open clock app and show instructions
+  window.location.href = `clock-alarm://`;
+  const btn = document.querySelector('.agua-set-all');
+  const orig = btn.textContent;
+  btn.textContent = '✓ Abra o Relógio e adicione: 08h00 · 11h30 · 15h00 · 18h30';
+  btn.style.fontSize = '12px';
+  setTimeout(()=>{
+    btn.textContent = orig;
+    btn.style.fontSize = '';
+  }, 5000);
+}
+
+// ── NUTRITION DATA
+const isFutebolDay = () => new Date().getDay() === 1; // Monday
+
+const REFEICOES_NORMAL = [
+  {id:'shot', time:'08h00', name:'Shot matinal', opcoes:[
+    {label:'Único', itens:[{n:'Mel',q:'1 col. sopa rasa (15g)'}], subs:[]}
+  ]},
+  {id:'cafe', time:'08h30', name:'Café da manhã', opcoes:[
+    {label:'Op.1', itens:[
+      {n:'Pão de forma integral',q:'2 fatias (50g)'},{n:'Ovos mexidos',q:'2 un. (100g)'},
+      {n:'Semente de chia',q:'1 col. sopa cheia (15g)'},{n:'Requeijão light',q:'2 col. sopa rasa (30g)'},
+      {n:'Banana nanica',q:'1 grande (85g)'},{n:'Suco integral de uva',q:'240ml'}
+    ], subs:['Pão: pão francês 50g','Chia: linhaça 15g','Requeijão: ricota light 37,5g / cottage 37,5g / minas frescal 22,5g / mussarela 15g','Banana: pera 110g / maçã 130g / abacaxi 150g / melão 315g / melancia 300g','Suco: suco de laranja 240ml']},
+    {label:'Op.2', itens:[
+      {n:'Leite integral UHT',q:'240ml'},{n:'Whey concentrado',q:'25g'},
+      {n:'Banana nanica',q:'1 grande (85g)'},{n:'Aveia em flocos',q:'2 col. sopa cheia (30g)'},
+      {n:'Doce de leite',q:'1 col. sopa rasa (20g)'},{n:'Semente de chia',q:'1 col. sopa cheia (15g)'}
+    ], subs:['Banana: pera 110g / maçã 130g / abacaxi 150g / melão 315g / melancia 300g','Aveia: granola zero 26g / cereal sem açúcar 32,5g','Doce de leite: mel 15g / geleia 20g','Chia: linhaça 15g']},
+    {label:'Op.3', itens:[
+      {n:'Banana nanica',q:'1 grande (90g)'},{n:'Ovo de galinha',q:'2 un. (100g)'},
+      {n:'Whey concentrado',q:'20g'},{n:'Aveia em flocos',q:'2 col. sopa cheia (30g)'},
+      {n:'Mel de abelha',q:'2 col. sopa rasa (30g)'}
+    ], subs:['Mel: geleia 33g / doce de leite cremoso 30g']}
+  ]},
+  {id:'almoco', time:'13h00', name:'Almoço', opcoes:[
+    {label:'Op.1', itens:[
+      {n:'Arroz branco cozido',q:'150g'},{n:'Feijão carioca cozido',q:'130g'},
+      {n:'Filé de frango grelhado',q:'130g'},{n:'Legumes cozidos',q:'100g'},
+      {n:'Azeite de oliva',q:'15g (preparo)'}
+    ], subs:['Arroz: batata inglesa 220g / batata doce 130g / purê 200g / macarrão 150g','Feijão: feijão preto 150g / molho tomate 100ml (se macarrão)','Frango: patinho 90g / filé suíno 180g / bife 100g / frango desfiado 125g / peixe 180g / bisteca 140g']},
+    {label:'Op.2', itens:[
+      {n:'Arroz branco cozido',q:'150g'},{n:'Fricassê de frango',q:'160g'},
+      {n:'Legumes cozidos',q:'100g'},{n:'Azeite de oliva',q:'15g (preparo)'}
+    ], subs:['Arroz: batata inglesa 220g / batata doce 135g / purê 200g']}
+  ]},
+  {id:'lanche', time:'15h–16h30', name:'Lanche / Pós-treino', opcoes:[
+    {label:'Op.1', itens:[
+      {n:'Banana nanica',q:'1 grande (85g)'},{n:'Whey concentrado',q:'30g'},
+      {n:'Granola sem açúcar',q:'2 col. sopa (26g)'},{n:'Semente de chia',q:'1 col. sopa rasa (8g)'},
+      {n:'Mel',q:'1 col. sopa rasa (15g)'}
+    ], subs:['Granola: aveia 30g / cereal sem açúcar 32,5g / sucrilhos 30g','Chia: coco ralado 6g','Mel: geleia 20g']},
+    {label:'Op.2', itens:[
+      {n:'Iogurte natural integral',q:'170g'},{n:'Banana nanica',q:'1 grande (85g)'},
+      {n:'Whey concentrado',q:'25g'},{n:'Granola sem açúcar',q:'2 col. sopa (26g)'}
+    ], subs:['Iogurte: leite integral 160ml','Banana: morango 250g / melão 300g / maçã 130g / manga 110g / uva 130g','Granola: aveia 30g / sucrilhos 30g / cereal 32,5g']},
+    {label:'Op.3', itens:[
+      {n:'Goma de tapioca',q:'2 col. sopa rasa (30g)'},{n:'Queijo mussarela',q:'2 fatias médias (40g)'},
+      {n:'Leite integral UHT',q:'140ml'},{n:'Whey concentrado',q:'20g'}
+    ], subs:['Mussarela: minas frescal 52,5g / requeijão light 60g']}
+  ]},
+  {id:'jantar', time:'19h–20h', name:'Jantar', opcoes:[
+    {label:'Op.1', itens:[
+      {n:'Arroz branco cozido',q:'130g'},{n:'Filé de frango grelhado',q:'150g'},
+      {n:'Requeijão light',q:'25g'},{n:'Legumes cozidos',q:'100g'},{n:'Azeite de oliva',q:'10g (preparo)'}
+    ], subs:['Arroz: batata inglesa 190g / batata doce 110g / purê 170g / macarrão 135g','Frango: patinho 105g / filé suíno 200g / bife 115g / frango desfiado 150g / peixe 200g']},
+    {label:'Op.2', itens:[
+      {n:'Pão francês',q:'1 un. (50g)'},{n:'Peito de frango em cubos',q:'200g'},
+      {n:'Queijo mussarela',q:'2,5 fatias finas (37,5g)'},{n:'Requeijão light',q:'2 col. sopa rasa (30g)'}
+    ], subs:['Pão: RAP10 Integral 40g','Requeijão: requeijão 20g']}
+  ]},
+  {id:'posjanta', time:'20h30', name:'Após o jantar', opcoes:[
+    {label:'Fruta', itens:[{n:'Manga',q:'100g'}], subs:['Banana 65g / morango 250g / pera 140g / maçã 110g / kiwi 130g / abacaxi 150g / melão 300g / melancia 250g']}
+  ]},
+  {id:'doce', time:'Quando der vontade', name:'Doce (opcional)', opcoes:[
+    {label:'Opção', itens:[{n:'Chocolate 60%',q:'3 quadradinhos (24,9g)'}], subs:['Ou qualquer doce até 120 kcal']}
+  ]},
+];
+
+const REFEICOES_FUTEBOL = [
+  {id:'shot_f', time:'08h00', name:'Shot matinal', opcoes:[
+    {label:'Único', itens:[{n:'Mel',q:'1 col. sopa rasa (15g)'}], subs:[]}
+  ]},
+  {id:'cafe_f', time:'08h30', name:'Café da manhã', opcoes: REFEICOES_NORMAL[1].opcoes},
+  {id:'almoco_f', time:'13h00', name:'Almoço', opcoes: REFEICOES_NORMAL[2].opcoes},
+  {id:'lanche_f', time:'16h00', name:'Lanche pré-jogo', opcoes:[
+    {label:'Op.1', itens:[
+      {n:'Banana nanica',q:'1 grande (85g)'},{n:'Whey concentrado',q:'20g'},
+      {n:'Granola sem açúcar',q:'2 col. sopa (26g)'},{n:'Semente de chia',q:'1 col. sopa rasa (8g)'}
+    ], subs:['Granola: aveia 30g / cereal 32,5g / sucrilhos 30g','Chia: coco ralado 6g']},
+    {label:'Op.2', itens:[
+      {n:'Iogurte natural integral',q:'170g'},{n:'Banana nanica',q:'1 grande (85g)'},
+      {n:'Whey concentrado',q:'20g'},{n:'Granola sem açúcar',q:'1 col. sopa (13g)'}
+    ], subs:['Iogurte: leite integral 160ml','Banana: morango 250g / melão 300g / maçã 130g / manga 110g / uva 130g','Granola: aveia 15g / sucrilhos 15g / cereal 19,5g']},
+    {label:'Op.3', itens:[
+      {n:'Goma de tapioca',q:'2 col. sopa rasa (30g)'},{n:'Queijo mussarela',q:'1 fatia média (20g)'},
+      {n:'Leite integral UHT',q:'100ml'},{n:'Whey concentrado',q:'20g'}
+    ], subs:['Mussarela: minas frescal 52,5g / requeijão light 60g']}
+  ]},
+  {id:'jantar_f', time:'19h00', name:'Jantar (mais cedo)', opcoes: REFEICOES_NORMAL[4].opcoes},
+  {id:'ceia_f', time:'23h00', name:'Ceia pós-futebol', opcoes:[
+    {label:'Op.1', itens:[
+      {n:'Iogurte grego zero',q:'90g'},{n:'Granola zero açúcares',q:'1,5 col. sopa (19,5g)'}
+    ], subs:['Granola: banana 65g / morango 250g / pera 140g / maçã 110g / kiwi 130g / abacaxi 150g / melão 300g / melancia 250g / cereal sem açúcar 19,5g / manga 100g']},
+    {label:'Op.2', itens:[
+      {n:'Leite integral UHT',q:'140ml'},{n:'Whey protein',q:'10g'}
+    ], subs:[]},
+    {label:'Op.3', itens:[
+      {n:'Magic Toast Integral',q:'1 pacote (18g)'},{n:'Queijo tipo cottage',q:'4 col. sopa rasa (60g)'}
+    ], subs:['Cottage: ricota light 45g']}
+  ]},
+  {id:'doce_f', time:'Quando der vontade', name:'Doce (opcional)', opcoes:[
+    {label:'Opção', itens:[{n:'Chocolate 60%',q:'3 quadradinhos (24,9g)'}], subs:['Ou qualquer doce até 120 kcal']}
+  ]},
+];
+
+let nutriChecked = JSON.parse(localStorage.getItem('nutri_'+todayKey())||'{}');
+let nutriOpcoes = JSON.parse(localStorage.getItem('nutri_op_'+todayKey())||'{}');
+
+function renderNutri(){
+  const today = new Date();
+  document.getElementById('nutri-date').textContent =
+    today.toLocaleDateString('pt-BR',{weekday:'long',day:'numeric',month:'long'});
+  const futebol = isFutebolDay();
+  const badge = document.getElementById('nutri-day-badge');
+  badge.innerHTML = `<span class="nutri-day-badge ${futebol?'nutri-futebol':'nutri-normal'}">${futebol?'Segunda-feira — dia de futebol':'Dia normal'}</span>`;
+  const refeicoes = futebol ? REFEICOES_FUTEBOL : REFEICOES_NORMAL;
+  const container = document.getElementById('nutri-refeicoes');
+  container.innerHTML = refeicoes.map(r => {
+    const done = !!nutriChecked[r.id];
+    const activeOp = nutriOpcoes[r.id]||0;
+    const op = r.opcoes[activeOp]||r.opcoes[0];
+    return `<div class="refeicao-card ${done?'done-meal':''}" id="rcard_${r.id}">
+      <div class="refeicao-header" onclick="toggleRefeicao('${r.id}')">
+        <div class="refeicao-check" onclick="event.stopPropagation();markRefeicao('${r.id}')">${done?'✓':''}</div>
+        <div class="refeicao-info">
+          <div class="refeicao-time">${r.time}</div>
+          <div class="refeicao-name">${r.name}</div>
+        </div>
+        <div class="refeicao-expand" id="rexp_${r.id}">▾</div>
+      </div>
+      <div class="refeicao-body" id="rbody_${r.id}">
+        ${r.opcoes.length > 1 ? `<div class="opcao-tabs">${r.opcoes.map((op,i)=>`<button class="opcao-tab ${i===activeOp?'active':''}" onclick="selectOpcao('${r.id}',${i})">${op.label}</button>`).join('')}</div>` : ''}
+        ${r.opcoes.map((op,i)=>`<div class="opcao-content ${i===activeOp?'active':''}" id="rop_${r.id}_${i}">
+          ${op.itens.map(it=>`<div class="food-row"><span class="food-name">${it.n}</span><span class="food-qty">${it.q}</span></div>`).join('')}
+          ${op.subs.length ? `<div class="sub-label">Substituições</div><div class="sub-text">${op.subs.join('<br>')}</div>` : ''}
+        </div>`).join('')}
+        <input class="obs-field" type="text" placeholder="Observação..." id="robs_${r.id}"
+          value="${localStorage.getItem('nutri_obs_'+r.id+todayKey())||''}"
+          oninput="saveObs('${r.id}',this.value)">
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function toggleRefeicao(id){
+  const body = document.getElementById('rbody_'+id);
+  const exp = document.getElementById('rexp_'+id);
+  const open = body.classList.toggle('open');
+  exp.textContent = open ? '▴' : '▾';
+}
+
+function markRefeicao(id){
+  nutriChecked[id] = !nutriChecked[id];
+  localStorage.setItem('nutri_'+todayKey(), JSON.stringify(nutriChecked));
+  const card = document.getElementById('rcard_'+id);
+  card.classList.toggle('done-meal', !!nutriChecked[id]);
+  const check = card.querySelector('.refeicao-check');
+  check.textContent = nutriChecked[id] ? '✓' : '';
+}
+
+function selectOpcao(id, idx){
+  nutriOpcoes[id] = idx;
+  localStorage.setItem('nutri_op_'+todayKey(), JSON.stringify(nutriOpcoes));
+  const r = [...REFEICOES_NORMAL,...REFEICOES_FUTEBOL].find(r=>r.id===id);
+  if(!r) return;
+  r.opcoes.forEach((op,i)=>{
+    const tab = document.querySelectorAll(`#rbody_${id} .opcao-tab`)[i];
+    const content = document.getElementById(`rop_${id}_${i}`);
+    if(tab) tab.classList.toggle('active', i===idx);
+    if(content) content.classList.toggle('active', i===idx);
+  });
+}
+
+function saveObs(id, val){
+  localStorage.setItem('nutri_obs_'+id+todayKey(), val);
+}
+
+// ── SAUNA
+let saunaTimer = null;
+let saunaSeconds = 15*60;
+let saunaRunning = false;
+let saunaRound = 1;
+let saunaPhase = 'inside'; // inside | rest | done
+let saunaDone = JSON.parse(localStorage.getItem('sauna_done')||'[]');
+
+const SAUNA_DAYS = ['Seg','Ter','Qua','Qui','Sex','Sáb'];
+const SAUNA_PHASES = {
+  inside: {dur: 15*60, label: (r)=>`Round ${r} — na sauna`, next: 'rest'},
+  rest:   {dur: 6*60,  label: (r)=>`Descanso — fora da sauna`, next: 'inside'},
+};
+
+function renderSauna(){
+  const today = new Date();
+  document.getElementById('sauna-date').textContent =
+    today.toLocaleDateString('pt-BR',{weekday:'long',day:'numeric',month:'long'});
+  renderSaunaDots();
+  renderSaunaWeek();
+  updateSaunaDisplay();
+}
+
+function renderSaunaDots(){
+  document.getElementById('sauna-dots').innerHTML = [1,2].map(i=>
+    `<div class="sauna-dot ${i < saunaRound ? 'done' : i===saunaRound && saunaPhase==='inside' ? 'active' : ''}"></div>`
+  ).join('');
+}
+
+function renderSaunaWeek(){
+  const grid = document.getElementById('sauna-week-grid');
+  const todayIdx = (new Date().getDay()+6)%7;
+  grid.innerHTML = SAUNA_DAYS.map((d,i)=>{
+    const key = 'sauna_'+getWeekKey()+'_'+i;
+    const done = saunaDone.includes(key);
+    return `<div class="sauna-day-btn ${done?'done-sauna':''}" onclick="toggleSaunaDay(${i})">
+      <div class="sauna-day-icon">${done?'🔥':'○'}</div>
+      <div class="sauna-day-label">${d}</div>
+    </div>`;
+  }).join('');
+}
+
+function getWeekKey(){
+  const d = new Date();
+  const day = d.getDay();
+  const diff = d.getDate() - day + (day===0?-6:1);
+  const mon = new Date(d.setDate(diff));
+  return mon.toISOString().slice(0,10);
+}
+
+function toggleSaunaDay(idx){
+  const key = 'sauna_'+getWeekKey()+'_'+idx;
+  if(saunaDone.includes(key)) saunaDone = saunaDone.filter(k=>k!==key);
+  else saunaDone.push(key);
+  localStorage.setItem('sauna_done', JSON.stringify(saunaDone));
+  renderSaunaWeek();
+}
+
+function updateSaunaDisplay(){
+  const mins = Math.floor(saunaSeconds/60);
+  const secs = saunaSeconds%60;
+  document.getElementById('sauna-timer').textContent =
+    String(mins).padStart(2,'0')+':'+String(secs).padStart(2,'0');
+  const phaseData = SAUNA_PHASES[saunaPhase];
+  const label = phaseData ? phaseData.label(saunaRound) : 'Sessão concluída!';
+  document.getElementById('sauna-phase-label').textContent = label;
+  const btn = document.getElementById('sauna-main-btn');
+  if(saunaPhase==='done'){
+    btn.textContent = 'Sessão completa!';
+    btn.style.background = 'var(--ok)';
+    btn.onclick = null;
+  } else {
+    btn.textContent = saunaRunning ? 'Pausar' : (saunaSeconds===SAUNA_PHASES[saunaPhase]?.dur ? `Iniciar ${saunaPhase==='inside'?'round '+saunaRound:'descanso'}` : 'Continuar');
+    btn.style.background = saunaRunning ? '#555' : '#FF7043';
+  }
+  renderSaunaDots();
+}
+
+function saunaToggle(){
+  if(saunaPhase==='done') return;
+  if(saunaRunning){
+    clearInterval(saunaTimer);
+    saunaRunning = false;
+  } else {
+    saunaRunning = true;
+    saunaTimer = setInterval(()=>{
+      saunaSeconds--;
+      if(saunaSeconds <= 0){
+        clearInterval(saunaTimer);
+        saunaRunning = false;
+        advanceSaunaPhase();
+      }
+      updateSaunaDisplay();
+    }, 1000);
+  }
+  updateSaunaDisplay();
+}
+
+function advanceSaunaPhase(){
+  if(saunaPhase==='inside'){
+    if(saunaRound < 2){
+      saunaPhase = 'rest';
+      saunaSeconds = SAUNA_PHASES.rest.dur;
+    } else {
+      saunaPhase = 'done';
+      saunaSeconds = 0;
+      const key = 'sauna_'+getWeekKey()+'_'+((new Date().getDay()+6)%7);
+      if(!saunaDone.includes(key)) saunaDone.push(key);
+      localStorage.setItem('sauna_done', JSON.stringify(saunaDone));
+      renderSaunaWeek();
+    }
+  } else if(saunaPhase==='rest'){
+    saunaRound++;
+    saunaPhase = 'inside';
+    saunaSeconds = SAUNA_PHASES.inside.dur;
+  }
+  updateSaunaDisplay();
+}
+
+function saunaReset(){
+  clearInterval(saunaTimer);
+  saunaRunning = false;
+  saunaRound = 1;
+  saunaPhase = 'inside';
+  saunaSeconds = 15*60;
+  const btn = document.getElementById('sauna-main-btn');
+  btn.style.background = '#FF7043';
+  btn.onclick = saunaToggle;
+  updateSaunaDisplay();
+}
+
+// ── TAB SWITCHING
+function switchTab(tab){
+  ['treino','supls','agua','nutri','sauna'].forEach(t => {
+    const el = document.getElementById('nav-'+t);
+    if(el) el.classList.toggle('active', t===tab);
+  });
+  document.getElementById('bottom-nav').style.display = 'flex';
+
+  if(tab==='treino'){
+    showScreen('screen-home');
+    renderHome();
+  } else if(tab==='supls'){
+    suplChecked = JSON.parse(localStorage.getItem('supl_'+todayKey())||'{}');
+    renderSupls();
+    showScreen('screen-supls');
+  } else if(tab==='agua'){
+    aguaChecked = JSON.parse(localStorage.getItem('agua_'+todayKey())||'{}');
+    renderAgua();
+    showScreen('screen-agua');
+  } else if(tab==='nutri'){
+    nutriChecked = JSON.parse(localStorage.getItem('nutri_'+todayKey())||'{}');
+    nutriOpcoes = JSON.parse(localStorage.getItem('nutri_op_'+todayKey())||'{}');
+    renderNutri();
+    showScreen('screen-nutri');
+  } else if(tab==='sauna'){
+    renderSauna();
+    showScreen('screen-sauna');
+  }
+  window.scrollTo(0,0);
+}
+
 // ── INIT
 renderHome();
+renderSupls();
+renderAgua();
+renderNutri();
+renderSauna();
 </script>
 </body>
 </html>
